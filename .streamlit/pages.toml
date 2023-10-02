@@ -1,0 +1,9 @@
+[[pages]]
+path = "intro.py"
+name = "Introduction"
+icon = "🏠"
+
+[[pages]]
+path = "pages/week_1_choice_theory.py"
+name = "Week 1 - Choice Theory"
+icon = "📖"
