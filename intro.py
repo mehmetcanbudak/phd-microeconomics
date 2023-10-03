@@ -106,6 +106,12 @@ with c2:
     )
 
     st.link_button(
+        "Lecture Notes by Mark Dean (Columbia)",
+        "http://www.columbia.edu/~md3405/Choice_PHD_19.shtml",
+        type="secondary",
+    )
+
+    st.link_button(
         "Microeconomic Theory (great for short proofs) YouTube channel by Selcuk Ozyurt (York U)",
         "https://www.youtube.com/@selcukozyurt",
         type="secondary",
@@ -244,7 +250,9 @@ with c2:
         unsafe_allow_html=True,
     )
 
-    st.write(f"Find a good source for top 10 things to know in microeconomics.")
+    st.write(
+        f"Find a good source for top 10 things to know in microeconomics."
+    )
     st.write(f"Whom to follow on Twitter?")
 
     with st.expander("Click to expand", expanded=False):

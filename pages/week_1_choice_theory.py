@@ -1,10 +1,14 @@
+import random
+from itertools import combinations
+
 import numpy as np
 import pandas as pd
-import src.scripts.plot_themes as thm
-import src.scripts.utils as utl
 import streamlit as st
 from matplotlib import pyplot as plt
 from st_pages import add_page_title
+
+import src.scripts.plot_themes as thm
+import src.scripts.utils as utl
 
 ### PAGE CONFIGS ###
 
@@ -17,59 +21,266 @@ _, col_top, _ = utl.wide_col()
 ### PAGE INTRO ###
 
 with col_top:
-    st.title("Lecture Title")
-    st.header("Lecture Header with more details")
-
-    st.write("Brief description of the page contents.")
+    st.title("Preferences and Choices")
+    st.header("Weak Axiom of Revealed Preferences (WARP)")
+    st.write(
+        "This week we're studying Choice Theory, which is at the core of microecnomic theory."
+    )
+    st.write(
+        "As a visual exercise, I decided to build a simple game to check if you're consistent in your choices."
+    )
 
 ### START OF CONTENT ###
 
 
 ### VISUALS ###
-_, c1, _ = utl.narrow_col()
+_, c1, _ = utl.wide_col()
 
 with c1:
     st.markdown(
-        "<h3 style='text-align: left'> 1. Visual part with visuals</h3>",
+        "<h3 style='text-align: left'> 1. Let's check your fruit choices!</h3>",
         unsafe_allow_html=True,
     )
 
-    st.write(r"This is some text about what's below - general idea.")
-    st.write(r"It will contain some plot or tables.")
+    st.write(r"Suppose there are 4 fruits: Apple, Banana, Mango, and Orange.")
+    st.write(
+        r"You will be given different menus of 2-3 fruits to choose from."
+    )
+    st.write(r"Based on your tastes, pick one or more fruits from each menu.")
+    st.write(
+        r"Once you finish, you can check if you're consistent according to rational choice theory."
+    )
 
+_, slider_col, _ = st.columns(3)
+
+_, c1, _ = utl.narrow_col()
+
+with slider_col:
     st.markdown(
-        "<h4 style='text-align: left'>Choose parameters</h3>",
+        "<h3 style='text-align: center'>WARP checker</h3>",
         unsafe_allow_html=True,
     )
 
-    lam_cust = st.slider(
-        r"Risk aversion parameter, $\lambda$",
-        min_value=0.0,
-        max_value=2.0,
-        value=0.0,
-        step=0.1,
-    )
+    # Pseudo code for WARP violation checker:
+    # 1. Generate bundles of size 2 and 3 from the given items.
+    # 2. Display a bundle of items to the user.
+    # 3. User selects the items they prefer.
+    # 4. Record the user's choice.
+    # 5. Remove shown bundle from the list
+    # 6. Do not allow empty choices
+    # 7. Repeat steps 2-6 until all bundles have been shown.
+    # 8. Check if the user chose consistently according to WARP in all of the bundles.
+    # 9. If WARP is violated, display the reason and the bundles where the violation occurred.
+    # 10. If WARP is not violated, display a message saying so.
 
-    def plot_utility(lam):
-        x = np.linspace(0, 3, 100)
+    # Items and Bundles
+    items = ["Apple", "Banana", "Mango", "Orange"]
 
-        fig = plt.figure()
+    def generate_bundles(items):
+        """Generate bundles of size 2 and 3 from the given items."""
+        bundles = []
+        for i in range(3, 4):
+            bundles.extend(combinations(items, i))
+        return bundles
 
-        plt.plot(x, x**lam, color=thm.cols_set1_plt[1], label=r"$u(c) = c^\lambda$")
-        plt.xlabel(r"$c$")
-        plt.ylabel(r"$u(c)$")
+    BUNDLES = generate_bundles(items)
 
-        plt.xlim([0, 3])
-        plt.ylim([0, 5])
+    # Session state to keep track of choices, the current bundle, and shown bundles
+    def initialize_session_state():
+        st.session_state.choices = []
+        st.session_state.shown_bundles = []
+        st.remaining_bundles = BUNDLES
+        st.session_state.current_bundle = random.choice(BUNDLES)
+        st.session_state.end_choices = False
 
-        plt.legend()
+    if "shown_bundles" not in st.session_state:
+        initialize_session_state()
 
-        return fig
+    bundle_number = len(st.session_state.shown_bundles) + 1
 
-    st.pyplot(plot_utility(lam_cust))
+    if bundle_number <= len(BUNDLES):
+        # Displaying the current bundle
+        st.write(
+            f"Bundle #{bundle_number} of {len(BUNDLES)}. Please select one or more items."
+        )
 
+        # Displaying checkboxes for the items in the current bundle
+        selected_items = []
+        for item in st.session_state.current_bundle:
+            # Use the bundle number as a unique key for each checkbox
+            unique_key = f"{item}_{bundle_number}"
+            checked = st.checkbox(item, key=unique_key)
+            if checked:
+                selected_items.append(item)
+
+        confirm = st.button("Confirm Choices")
+        if confirm and selected_items:
+            # Record choices and shown bundles
+            st.session_state.choices.append(set(selected_items))
+            st.session_state.shown_bundles.append(
+                st.session_state.current_bundle
+            )
+
+            # Remove current bundle from the remaining ones
+            st.session_state.remaining_bundles = [
+                bundle
+                for bundle in BUNDLES
+                if bundle not in st.session_state.shown_bundles
+            ]
+
+            # Check if there are any remaining bundles left and pick one if so
+            if st.session_state.remaining_bundles:
+                st.session_state.current_bundle = random.choice(
+                    st.session_state.remaining_bundles
+                )
+            st.rerun()
+    else:
+        st.write("All bundles have been shown.")
+        st.session_state.end_choices = True
+
+    def generate_html_table(bundles, choices):
+        """Generate an HTML table from lists of bundles and choices."""
+        html_table = '<table border="1">'
+
+        # Add the headers
+        html_table += (
+            "<thead><tr><th>Bundles</th><th>Choices</th></tr></thead><tbody>"
+        )
+
+        # Add the rows of data
+        for bundle, choice in zip(bundles, choices):
+            bundle_str = str(bundle).replace("'", "")
+            choice_str = str(choice).replace("'", "")
+
+            html_table += (
+                f"<tr><td>{bundle_str}</td><td>{choice_str}</td></tr>"
+            )
+
+            # html_table += f"<tr><td>{bundle}</td><td>{choice}</td></tr>"
+
+        # Close the table
+        html_table += "</tbody></table>"
+
+        return html_table
+
+    # After you have collected all bundles and choices:
+    if st.session_state.end_choices:
+        html_table = generate_html_table(
+            st.session_state.shown_bundles, st.session_state.choices
+        )
+        st.markdown(html_table, unsafe_allow_html=True)
+
+    def check_warp_pairwise(
+        x,
+        y,
+        bundles=st.session_state.shown_bundles,
+        choices=st.session_state.choices,
+    ):
+        """Check if the user chose consistently according to WARP in all of the bundles."""
+        bundles_xy = []
+        rel_choices = []
+        # bundle_index = []
+
+        for i in range(len(bundles)):
+            if (x in bundles[i]) and (y in bundles[i]):
+                bundles_xy.append(bundles[i])
+                rel_choices.append(choices[i])
+                # bundle_index.append(i)
+
+        # st.write(f"Bundles that contain both {x} and {y}: {bundles_xy}")
+        # st.write(f"Respective choices: {rel_choices}")
+
+        # check if x, y were chosen at least once across relevant bundles
+        choose_x = [(b, c) for b, c in zip(bundles_xy, rel_choices) if x in c]
+        choose_y = [(b, c) for b, c in zip(bundles_xy, rel_choices) if y in c]
+        len_x = len(choose_x)
+        len_y = len(choose_y)
+
+        if len_x == 0 or len_y == 0:
+            return {
+                "condition": False,
+                "reason": "Impossible to detect WARP violation.",
+            }
+
+        # conditions for violation of WARP
+        # either x or y was chosen in all bundles or both were chosen in all bundles
+        warpl_yes = []
+        warpl_not = []
+
+        if 0 < len_x < len(rel_choices):
+            # if condition fails, then it meanst that x was chosen in at least one but not all bundles
+            for bundle, choice in zip(bundles_xy, rel_choices):
+                if x in choice:
+                    warpl_yes = [bundle, choice]
+                elif y in choice:
+                    warpl_not = [bundle, choice]
+
+            return {
+                "condition": True,
+                "reason": "WARP violation detected!",
+                "item_1": x,
+                "item_2": y,
+                "chosen": warpl_yes,
+                "not_chosen": warpl_not,
+            }
+
+        elif 0 < len_y < len(rel_choices):
+            # if condition fails, then it meanst that y was chosen in at least one but not all bundles
+            for bundle, choice in zip(bundles_xy, rel_choices):
+                if y in choice:
+                    warpl_yes = [bundle, choice]
+                elif x in choice:
+                    warpl_not = [bundle, choice]
+
+            return {
+                "condition": True,
+                "reason": "WARP violation detected!",
+                "item_1": y,
+                "item_2": x,
+                "chosen": warpl_yes,
+                "not_chosen": warpl_not,
+            }
+
+        else:
+            return {"condition": False, "reason": "WARP was not violated."}
+
+    if st.session_state.end_choices:
+        # loop through all pairs of items until a WARP violation is found
+        st.markdown("<br>", unsafe_allow_html=True)
+
+        if st.button("Check for WARP violations", type="primary"):
+            for x, y in combinations(items, 2):
+                warp = check_warp_pairwise(x, y)
+                # st.write("looping", x, y)
+                # st.write(f"""{warp["reason"]}""")
+
+                if warp["condition"]:
+                    st.write(
+                        "Your choices were inconsistent according to WARP.😔"
+                    )
+
+                    st.markdown(
+                        f"""**Explanation:**<br>
+                    Let's call bundles $A=$ {warp["chosen"][0]} and $B=$ {warp["not_chosen"][0]}<br>
+                    Your choices were:<br>
+                    $C(A)=C${warp["chosen"][0]} $=${warp["chosen"][1]}<br>
+                    $C(B)=C${warp["not_chosen"][0]} $=${warp["not_chosen"][1]}<br>                                                          
+                    Both {warp["item_1"]} and {warp['item_2']} were available in bundles $A$ and $B$.<br>
+                    {warp["item_1"]} was chosen from $A$ and {warp["item_2"]} was chosen from $B$.<br>
+                    However {warp["item_1"]} was not chosen from $B$.<br>
+                    Therefore, WARP is violated.""",
+                        unsafe_allow_html=True,
+                    )
+                    break  # exit the loop once the first violation is found
+            else:
+                st.write("No WARP violations detected.🥳")
+
+
+_, c2, _ = utl.wide_col()
+
+with c2:
     st.markdown(
-        "<h4 style='text-align: left'>Potentially interesting takeaways</h3>",
+        "<h4 style='text-align: left'>Potentially interesting takeaways</h4>",
         unsafe_allow_html=True,
     )
 
@@ -77,9 +288,9 @@ with c1:
 
 
 ### THEORY ###
-_, c2, _ = utl.narrow_col()
+_, c3, _ = utl.wide_col()
 
-with c2:
+with c3:
     st.markdown(
         "<h3 style='text-align: left'> 2. Theory part with formulas</h3>",
         unsafe_allow_html=True,
@@ -89,26 +300,30 @@ with c2:
     st.write(r"It will contain some formulas")
 
 ### EXERCISES ###
-_, c3, _ = utl.narrow_col()
+_, c4, _ = utl.wide_col()
 
-with c3:
+with c4:
     st.markdown(
         "<h3 style='text-align: left'> 3. Exercise part with problems</h3>",
         unsafe_allow_html=True,
     )
 
     st.write(r"This is some text about what's below - general idea.")
-    st.write(r"It will contain some exercise questions with or without solutions.")
+    st.write(
+        r"It will contain some exercise questions with or without solutions."
+    )
 
 
 ### PROOFS ###
-_, c4, _ = utl.narrow_col()
+_, c5, _ = utl.wide_col()
 
-with c3:
+with c5:
     st.markdown(
         "<h3 style='text-align: left'> 4. Proofs to remember</h3>",
         unsafe_allow_html=True,
     )
 
     st.write(r"This is some text about what's below - general idea.")
-    st.write(r"It will contain some proofs, i.e., formulas that flow coherently.")
+    st.write(
+        r"It will contain some proofs, i.e., formulas that flow coherently."
+    )
