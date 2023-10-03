@@ -237,7 +237,7 @@ with c2:
     <br>
 
     Next semester - game theory and market design. <br>
-    Bonus if time permits (it never does) - TBD.
+    Bonus if time permits (it never does) - behavioral economics, stochastic choice.
 
     """,
             unsafe_allow_html=True,
@@ -250,20 +250,57 @@ with c2:
         unsafe_allow_html=True,
     )
 
-    st.write(
-        f"Find a good source for top 10 things to know in microeconomics."
-    )
-    st.write(f"Whom to follow on Twitter?")
+    st.write(f"This is just a personal attempt - all suggestions are welcome!")
+    st.write(f"Also, this is just limited to PhD Micro I.")
+    st.write(f"Also whom to follow on Twitter?")
 
-    with st.expander("Click to expand", expanded=False):
+    with st.expander("Click to expand", expanded=True):
         st.markdown(
             r"""
-        1. **Top 1 thing to know** <br>
-        Some fancy formula: $E[x] = E[E[x|y]]$ <br>
+        1. **Rational Choice Theory** <br>
+        A preference relation $\succeq$ is rational if it's complete and transitive.<br>
+        Completeness implies reflexivity. <br>
         
-        2. **Top 2 thing to know** <br>
-        Some other fancy formula: $E[x] = E[E[x|y]]$ <br>
+        2. **Utility Representation** <br>
+        $u: X \to \mathbb{R}$ represents $\succeq$, if for all $x, y \in X$, $x \succeq y iff u(x) \geq u(y)$ <br>
+        $\succeq$ can be represented by $u$ if and only if it is rational. <br>
+        If $X = \mathbb{R}^L_+$ and $\succeq$ is rational and continuous, then $\exists u$ (continuous) that represents $\succeq$<br>
+
+        3. **WARP and Axioms $\alpha$ and $\beta$** <br>
+        WARP is necessary but not sufficient for rationality. $\alpha$ and $\beta$ together imply WARP and vice-versa. <br>
+        WARP: if $x, y \in B_1 \cap B_2$ and if $x \in C(B_1)$, $y \ in C(B_2)$, then it must be the case that $x \in C(B_2)$. <br>
+        $\alpha$ (aka Independence of Irrelevant Alternatives): if $x$ chosen from a subset, then it must be chosen from superset.<br>
+        $\beta$: if $x, y$ are chosen from a subset and $y$ is chosen from superset, then $x$ must be chosen from superset.<br>
+
+        4. **Duality of utility maximization and expenditure minimization - Walrasian (or Marshallian) and Hicksian demand** <br>
+        If $u$ is continous and represents a locally nonsatiated $\succeq$, then $x^*$ that solves UMP also solves EMP and vice-versa.<br>
+        Solving UMP gives Walrasian demand and solving EMP gives Hicksian demand. <br>
+        If $x(p, w)$ is the Walrasian demand function, then:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp; i. $p \cdot x(p, w) = w$<br>
+            &nbsp;&nbsp;&nbsp;&nbsp; ii. $x(p, w)$ is homogeneous of degree 0 in $(p, w)$ <br>
+            &nbsp;&nbsp;&nbsp;&nbsp; iii. If $\succeq$ is convex (so $u$ is quasiconcave), $x(p,w)$ is a convex set. If $\succeq$ is strictly convex (so $u$ is strictly quasiconcave), $x(p,w)$ is single-valued.
+                    
+        5. **General equilibrium** <br>
+        Fundamental Theorems of Welfare Economics:<br>
+        &nbsp;&nbsp;&nbsp;&nbsp; First: competitive equilibrium is Pareto-efficient. <br>
+        &nbsp;&nbsp;&nbsp;&nbsp; Second: for any Pareto-efficient allocation $(x^*, y^*), \exists p \neq 0$, s.t., $(x^*, y^*, p)$ is a price quasi-equilibrium with transfers.<br>
+        Edgeworth box. <br>  
         
+        6. **Comparative statics**<br>
+        Compensating variation and equivalent variation. <br>
+        Consumer surplus. <br>
+
+        7. **Optimization with Lagrange and Kuhn-Tucker** <br>
+
+        8. **Weierstrass Theorem** <br>
+        Let $X \subset \mathbb{R}^n$ be compact, and let $f: X \to \mathbb{R}$ be continuous. Then $f$ attains a maximum and a minimum on $X$,<br>
+        i.e., there exists points $z_1$, $z_2 \in X$ such that $f(z_1) \leq f(x) \leq f(z_2)$ for all $x \in X$. <br> 
+
+        9. **Choice under Uncertainty** <br>
+        Independence axiom. <br>
+        Linearity of vNM expected utility: $U(L)= \sum_{n=1}^N p_n u_n$, where $u_n$ are Bernoulli utilities  <br>
+        Certainty equivalent, risk premium, and probability premium.
+      
         """,
             unsafe_allow_html=True,
         )

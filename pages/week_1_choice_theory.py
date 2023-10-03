@@ -3,12 +3,11 @@ from itertools import combinations
 
 import numpy as np
 import pandas as pd
+import src.scripts.plot_themes as thm
+import src.scripts.utils as utl
 import streamlit as st
 from matplotlib import pyplot as plt
 from st_pages import add_page_title
-
-import src.scripts.plot_themes as thm
-import src.scripts.utils as utl
 
 ### PAGE CONFIGS ###
 
@@ -43,12 +42,10 @@ with c1:
     )
 
     st.write(r"Suppose there are 4 fruits: Apple, Banana, Mango, and Orange.")
-    st.write(
-        r"You will be given different menus of 2-3 fruits to choose from."
-    )
+    st.write(r"You will be given different menus of 2-3 fruits to choose from.")
     st.write(r"Based on your tastes, pick one or more fruits from each menu.")
     st.write(
-        r"Once you finish, you can check if you're consistent according to rational choice theory."
+        r"Once you finish, you can check if you're not violating axioms of the rational choice theory."
     )
 
 _, slider_col, _ = st.columns(3)
@@ -117,9 +114,7 @@ with slider_col:
         if confirm and selected_items:
             # Record choices and shown bundles
             st.session_state.choices.append(set(selected_items))
-            st.session_state.shown_bundles.append(
-                st.session_state.current_bundle
-            )
+            st.session_state.shown_bundles.append(st.session_state.current_bundle)
 
             # Remove current bundle from the remaining ones
             st.session_state.remaining_bundles = [
@@ -143,18 +138,14 @@ with slider_col:
         html_table = '<table border="1">'
 
         # Add the headers
-        html_table += (
-            "<thead><tr><th>Bundles</th><th>Choices</th></tr></thead><tbody>"
-        )
+        html_table += "<thead><tr><th>Bundles</th><th>Choices</th></tr></thead><tbody>"
 
         # Add the rows of data
         for bundle, choice in zip(bundles, choices):
             bundle_str = str(bundle).replace("'", "")
             choice_str = str(choice).replace("'", "")
 
-            html_table += (
-                f"<tr><td>{bundle_str}</td><td>{choice_str}</td></tr>"
-            )
+            html_table += f"<tr><td>{bundle_str}</td><td>{choice_str}</td></tr>"
 
             # html_table += f"<tr><td>{bundle}</td><td>{choice}</td></tr>"
 
@@ -255,9 +246,7 @@ with slider_col:
                 # st.write(f"""{warp["reason"]}""")
 
                 if warp["condition"]:
-                    st.write(
-                        "Your choices were inconsistent according to WARP.😔"
-                    )
+                    st.write("Your choices were inconsistent according to WARP.😔")
 
                     st.markdown(
                         f"""**Explanation:**<br>
@@ -271,10 +260,21 @@ with slider_col:
                     Therefore, WARP is violated.""",
                         unsafe_allow_html=True,
                     )
+
                     break  # exit the loop once the first violation is found
             else:
                 st.write("No WARP violations detected.🥳")
+                st.write(
+                    "Don't get too excited though, we'd need more choices to fully check whether your preferences are rational."
+                )
 
+        # Refresh only works if it's outside/independent of WARP button, otherwise it will only refresh WARP
+        if st.button("Click to Restart", type="primary"):
+            # If button pressed, trigger JS to refresh page
+            st.write(
+                '<meta http-equiv="refresh" content="1">',
+                unsafe_allow_html=True,
+            )
 
 _, c2, _ = utl.wide_col()
 
@@ -292,27 +292,32 @@ _, c3, _ = utl.wide_col()
 
 with c3:
     st.markdown(
-        "<h3 style='text-align: left'> 2. Theory part with formulas</h3>",
+        "<h3 style='text-align: left'> 2. Theory part</h3>",
         unsafe_allow_html=True,
     )
 
-    st.write(r"This is some text about what's below - general idea.")
-    st.write(r"It will contain some formulas")
+    st.write(
+        "Collection of statements about preference relations and utility representation."
+    )
 
 ### EXERCISES ###
 _, c4, _ = utl.wide_col()
 
 with c4:
     st.markdown(
-        "<h3 style='text-align: left'> 3. Exercise part with problems</h3>",
+        "<h3 style='text-align: left'> 3. Exercise part</h3>",
         unsafe_allow_html=True,
     )
-
-    st.write(r"This is some text about what's below - general idea.")
+    st.write(r"This will contain some exercise questions with or without solutions.")
     st.write(
-        r"It will contain some exercise questions with or without solutions."
+        r"Check out Rubinstein's lecture notes for exercises of all levels of difficulty."
     )
 
+    st.link_button(
+        "Rubinstein's Lecture Notes, pp. 10-11, 21-23, 44-47",
+        "https://arielrubinstein.tau.ac.il/books/PUP2020.pdf",
+        type="secondary",
+    )
 
 ### PROOFS ###
 _, c5, _ = utl.wide_col()
@@ -323,7 +328,6 @@ with c5:
         unsafe_allow_html=True,
     )
 
-    st.write(r"This is some text about what's below - general idea.")
     st.write(
-        r"It will contain some proofs, i.e., formulas that flow coherently."
+        r"This will contain main proofs. I'll try to explain how I memorize math in plain English."
     )
