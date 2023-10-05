@@ -4,6 +4,6 @@ name = "Introduction"
 icon = "🏠"
 
 [[pages]]
-path = "pages/week_1_choice_theory.py"
+path = "pages/1_choice_theory.py"
 name = "1. Choice Theory"
 icon = "📖"
