@@ -28,6 +28,7 @@ def narrow_col():
     return st.columns((0.35, 1, 0.35))
 
 
+# This is narrow_col_intro - not sure why Streamlit doesn't find it
 def narrow_col_intro():
     return st.columns((0.1, 1, 0.1))
 

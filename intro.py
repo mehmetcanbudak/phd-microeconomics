@@ -60,7 +60,6 @@ with c1:
         unsafe_allow_html=True,
     )
 
-
 s1, c2, s2 = utl.narrow_col_intro()
 
 # Textbooks
