@@ -3,15 +3,15 @@ from itertools import combinations
 
 import numpy as np
 import pandas as pd
-import src.scripts.plot_themes as thm
-import src.scripts.utils as utl
 import streamlit as st
 from matplotlib import pyplot as plt
 from st_pages import add_page_title
 
-### PAGE CONFIGS ###
+import src.scripts.plot_themes as thm
+import src.scripts.utils as utl
 
-st.set_page_config(layout="wide")
+### PAGE CONFIGS ###
+utl.micro_page_config()
 utl.local_css("src/styles/styles_pages.css")
 
 # create one column with consistent width
@@ -115,7 +115,9 @@ with slider_col:
         if confirm and selected_items:
             # Record choices and shown bundles
             st.session_state.choices.append(set(selected_items))
-            st.session_state.shown_bundles.append(st.session_state.current_bundle)
+            st.session_state.shown_bundles.append(
+                st.session_state.current_bundle
+            )
 
             # Remove current bundle from the remaining ones
             st.session_state.remaining_bundles = [
@@ -139,14 +141,18 @@ with slider_col:
         html_table = '<table border="1">'
 
         # Add the headers
-        html_table += "<thead><tr><th>Bundles</th><th>Choices</th></tr></thead><tbody>"
+        html_table += (
+            "<thead><tr><th>Bundles</th><th>Choices</th></tr></thead><tbody>"
+        )
 
         # Add the rows of data
         for bundle, choice in zip(bundles, choices):
             bundle_str = str(bundle).replace("'", "")
             choice_str = str(choice).replace("'", "")
 
-            html_table += f"<tr><td>{bundle_str}</td><td>{choice_str}</td></tr>"
+            html_table += (
+                f"<tr><td>{bundle_str}</td><td>{choice_str}</td></tr>"
+            )
 
             # html_table += f"<tr><td>{bundle}</td><td>{choice}</td></tr>"
 
@@ -247,7 +253,9 @@ with slider_col:
                 # st.write(f"""{warp["reason"]}""")
 
                 if warp["condition"]:
-                    st.write("Your choices were inconsistent according to WARP.😔")
+                    st.write(
+                        "Your choices were inconsistent according to WARP.😔"
+                    )
 
                     st.markdown(
                         f"""**Explanation:**<br>
@@ -305,7 +313,9 @@ with c2:
         unsafe_allow_html=True,
     )
 
-    rev_prefs_link = "https://cran.r-project.org/web/packages/revealedPrefs/index.html"
+    rev_prefs_link = (
+        "https://cran.r-project.org/web/packages/revealedPrefs/index.html"
+    )
     st.markdown(
         rf"""I found this package in R, [revealedPrefs]({rev_prefs_link}), which seem to have more efficient/general solutions. Is there no need to for this in Python?""",
         unsafe_allow_html=True,

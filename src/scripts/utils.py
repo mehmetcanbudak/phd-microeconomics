@@ -12,6 +12,14 @@ def external_css(file_url):
     )
 
 
+def micro_page_config():
+    st.set_page_config(
+        page_title="PhD Microeconomics",
+        page_icon="🍎",
+        layout="wide",
+    )
+
+
 def wide_col():
     return st.columns((0.2, 1, 0.2))
 
