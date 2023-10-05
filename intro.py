@@ -88,8 +88,8 @@ with c2:
     )
 
     st.link_button(
-        "Lecture Notes by Jonathan Gruber (MIT)",
-        "https://ocw.mit.edu/courses/14-01-principles-of-microeconomics-fall-2018/pages/lecture-notes/",
+        "MIT Open Course by Alexander Wolitzky (MIT)",
+        "https://ocw.mit.edu/courses/14-121-microeconomic-theory-i-fall-2015/pages/lecture-slides/",
         type="secondary",
     )
 
@@ -203,7 +203,7 @@ with c2:
     <br>
 
        <div class="numbered-header">
-        <b>Section 3: Choice under Uncertainty</b><br>
+        <b>Section 3: Choice Under Uncertainty</b><br>
     </div>
         
     <div class="numbered">
@@ -250,9 +250,11 @@ with c2:
         unsafe_allow_html=True,
     )
 
-    st.write(f"This is just a personal attempt - all suggestions are welcome!")
-    st.write(f"Also, this is just limited to PhD Micro I.")
-    st.write(f"Also whom to follow on Twitter?")
+    st.markdown(
+        f"""This is just a personal attempt - suggestions are more than welcome!<br>
+        Limited to PhD Micro I so far.""",
+        unsafe_allow_html=True,
+    )
 
     with st.expander("Click to expand", expanded=True):
         st.markdown(
@@ -268,13 +270,13 @@ with c2:
 
         3. **WARP and Axioms $\alpha$ and $\beta$** <br>
         WARP is necessary but not sufficient for rationality. $\alpha$ and $\beta$ together imply WARP and vice-versa. <br>
-        WARP: if $x, y \in B_1 \cap B_2$ and if $x \in C(B_1)$, $y \ in C(B_2)$, then it must be the case that $x \in C(B_2)$. <br>
-        $\alpha$ (aka Independence of Irrelevant Alternatives): if $x$ chosen from a subset, then it must be chosen from superset.<br>
-        $\beta$: if $x, y$ are chosen from a subset and $y$ is chosen from superset, then $x$ must be chosen from superset.<br>
+        WARP: if $x, y \in B_1 \cap B_2$ and if $x \in C(B_1)$, $y \in C(B_2)$, then it must be the case that $x \in C(B_2)$. <br>
+        $\alpha$ (aka Independence of Irrelevant Alternatives): if $x$ chosen from a subset, then it must be chosen from the superset.<br>
+        $\beta$: if $x, y$ are chosen from a subset and $y$ is chosen from a superset, then $x$ must be chosen from the superset.<br>
 
-        4. **Duality of utility maximization and expenditure minimization - Walrasian (or Marshallian) and Hicksian demand** <br>
+        4. **Duality of utility maximization and expenditure minimization** <br>
         If $u$ is continous and represents a locally nonsatiated $\succeq$, then $x^*$ that solves UMP also solves EMP and vice-versa.<br>
-        Solving UMP gives Walrasian demand and solving EMP gives Hicksian demand. <br>
+        Solving UMP gives the Walrasian (or Marshallian) demand and solving EMP gives the Hicksian demand. <br>
         If $x(p, w)$ is the Walrasian demand function, then:<br>
             &nbsp;&nbsp;&nbsp;&nbsp; i. $p \cdot x(p, w) = w$<br>
             &nbsp;&nbsp;&nbsp;&nbsp; ii. $x(p, w)$ is homogeneous of degree 0 in $(p, w)$ <br>
@@ -296,7 +298,7 @@ with c2:
         Let $X \subset \mathbb{R}^n$ be compact, and let $f: X \to \mathbb{R}$ be continuous. Then $f$ attains a maximum and a minimum on $X$,<br>
         i.e., there exists points $z_1$, $z_2 \in X$ such that $f(z_1) \leq f(x) \leq f(z_2)$ for all $x \in X$. <br> 
 
-        9. **Choice under Uncertainty** <br>
+        9. **Choice Under Uncertainty** <br>
         Independence axiom. <br>
         Linearity of vNM expected utility: $U(L)= \sum_{n=1}^N p_n u_n$, where $u_n$ are Bernoulli utilities  <br>
         Certainty equivalent, risk premium, and probability premium.

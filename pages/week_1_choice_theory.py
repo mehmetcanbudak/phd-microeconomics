@@ -21,7 +21,7 @@ _, col_top, _ = utl.wide_col()
 
 with col_top:
     st.title("Preferences and Choices")
-    st.header("Weak Axiom of Revealed Preferences (WARP)")
+    st.header("Rationality, WARP, and Utility Representation")
     st.write(
         "This week we're studying Choice Theory, which is at the core of microecnomic theory."
     )
@@ -41,11 +41,12 @@ with c1:
         unsafe_allow_html=True,
     )
 
-    st.write(r"Suppose there are 4 fruits: Apple, Banana, Mango, and Orange.")
-    st.write(r"You will be given different menus of 2-3 fruits to choose from.")
-    st.write(r"Based on your tastes, pick one or more fruits from each menu.")
-    st.write(
-        r"Once you finish, you can check if you're not violating axioms of the rational choice theory."
+    st.markdown(
+        r"""Suppose there are 4 fruits: Apple, Banana, Mango, and Orange.<br>
+                You will be given different menus ("bundles) of 2-3 fruits to choose from.<br>
+                Based on your preferences, pick one or more fruits from each bundle.<br>
+                Once you finish, you can check if you're not violating axioms of the rational choice theory.""",
+        unsafe_allow_html=True,
     )
 
 _, slider_col, _ = st.columns(3)
@@ -98,7 +99,7 @@ with slider_col:
     if bundle_number <= len(BUNDLES):
         # Displaying the current bundle
         st.write(
-            f"Bundle #{bundle_number} of {len(BUNDLES)}. Please select one or more items."
+            f"Bundle {bundle_number} of {len(BUNDLES)}. Please select one or more items."
         )
 
         # Displaying checkboxes for the items in the current bundle
@@ -195,41 +196,41 @@ with slider_col:
 
         # conditions for violation of WARP
         # either x or y was chosen in all bundles or both were chosen in all bundles
-        warpl_yes = []
-        warpl_not = []
+        warp_A = []
+        warp_B = []
 
         if 0 < len_x < len(rel_choices):
             # if condition fails, then it meanst that x was chosen in at least one but not all bundles
             for bundle, choice in zip(bundles_xy, rel_choices):
                 if x in choice:
-                    warpl_yes = [bundle, choice]
+                    warp_A = [bundle, choice]
                 elif y in choice:
-                    warpl_not = [bundle, choice]
+                    warp_B = [bundle, choice]
 
             return {
                 "condition": True,
                 "reason": "WARP violation detected!",
                 "item_1": x,
                 "item_2": y,
-                "chosen": warpl_yes,
-                "not_chosen": warpl_not,
+                "chosen": warp_A,
+                "not_chosen": warp_B,
             }
 
         elif 0 < len_y < len(rel_choices):
             # if condition fails, then it meanst that y was chosen in at least one but not all bundles
             for bundle, choice in zip(bundles_xy, rel_choices):
                 if y in choice:
-                    warpl_yes = [bundle, choice]
+                    warp_A = [bundle, choice]
                 elif x in choice:
-                    warpl_not = [bundle, choice]
+                    warp_B = [bundle, choice]
 
             return {
                 "condition": True,
                 "reason": "WARP violation detected!",
                 "item_1": y,
                 "item_2": x,
-                "chosen": warpl_yes,
-                "not_chosen": warpl_not,
+                "chosen": warp_A,
+                "not_chosen": warp_B,
             }
 
         else:
@@ -255,7 +256,7 @@ with slider_col:
                     $C(A)=C${warp["chosen"][0]} $=${warp["chosen"][1]}<br>
                     $C(B)=C${warp["not_chosen"][0]} $=${warp["not_chosen"][1]}<br>                                                          
                     Both {warp["item_1"]} and {warp['item_2']} were available in bundles $A$ and $B$.<br>
-                    {warp["item_1"]} was chosen from $A$ and {warp["item_2"]} was chosen from $B$.<br>
+                    {warp["item_1"]} was among choices from $A$ and {warp["item_2"]} was among choices from $B$.<br>
                     However {warp["item_1"]} was not chosen from $B$.<br>
                     Therefore, WARP is violated.""",
                         unsafe_allow_html=True,
@@ -280,11 +281,35 @@ _, c2, _ = utl.wide_col()
 
 with c2:
     st.markdown(
-        "<h4 style='text-align: left'>Potentially interesting takeaways</h4>",
+        "<h4 style='text-align: left'>Interesting takeaways</h4>",
         unsafe_allow_html=True,
     )
 
-    st.markdown("Takeaways are interesting to some people but not to others.")
+    # Streamlit is annoying because it doesn't render inline equations $$ within HTML tags
+    # Need to find a solution around that, e.g., with st.latex(), and increase margins manually with CSS?
+    st.markdown(
+        r"""
+            Building this algorithm definitely helped me internalize WARP for life. Below is my way of converting math into code.<br>
+            WARP states that if $x, y \in B_1 \cap B_2$ and if $x \in C(B_1)$, $y \in C(B_2)$, then it must be the case that $x \in C(B_2)$. <br>
+            1. Observe that WARP only applies to bundles that contain both $x$ and $y$.<br>
+            2. Thus it also requires a pairwise comparison of each two items, $x$ and $y$, e.g., Apple and Banana, Apple and Mango, etc.
+            (maybe there was a more efficient way?)<br>
+            3. So for each pair of bundles apply the following:<br>
+            a. Filter shown bundles to only those that contain both $x$ and $y$.<br>
+            b. Filter choices from these bundles into two lists, one where $x$ was chosen and one where $y$ was chosen separately.<br>
+            c. For WARP to hold, either $x$ or $y$ or both must be chosen in all relevant bundles.
+            Therefore, if either of the lists is empty or if both lists are same length, then WARP is not violated.<br>
+            d. If (c.) doesn't hold, then filter through the relevant bundles to pick two bundles $A$ and $B$
+            and their choices to proof WARP violation in text.<br>
+            """,
+        unsafe_allow_html=True,
+    )
+
+    rev_prefs_link = "https://cran.r-project.org/web/packages/revealedPrefs/index.html"
+    st.markdown(
+        rf"""I found this package in R, [revealedPrefs]({rev_prefs_link}), which seem to have more efficient/general solutions. Is there no need to for this in Python?""",
+        unsafe_allow_html=True,
+    )
 
 
 ### THEORY ###
@@ -308,7 +333,7 @@ with c4:
         "<h3 style='text-align: left'> 3. Exercise part</h3>",
         unsafe_allow_html=True,
     )
-    st.write(r"This will contain some exercise questions with or without solutions.")
+
     st.write(
         r"Check out Rubinstein's lecture notes for exercises of all levels of difficulty."
     )
@@ -329,5 +354,5 @@ with c5:
     )
 
     st.write(
-        r"This will contain main proofs. I'll try to explain how I memorize math in plain English."
+        r"This will contain some of the main proofs. I'll try to explain how I memorize math in plain English."
     )
