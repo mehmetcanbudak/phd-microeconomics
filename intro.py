@@ -37,7 +37,7 @@ with c1:
         """**Disclaimer:** <br>
         This website does not represent the official curriculum taught at my university. <br>
         My goal is to cover fewer topics in greater depth rather than scratch the surface of many. <br>
-        Visuals are meant to capture the key concepts, which could be helpful to undergraduate students and industry professionals, too. <br>
+        Visuals are meant to capture the key concepts, which could be also helpful for undergraduate students and industry professionals.<br>
         """,
         # Main difference is matrix algebra and proving everything along the way, which might not always be included here.
         # Hopefully it will give insights to both PhD students, undergrads, and others.
@@ -61,7 +61,7 @@ with c1:
     )
 
 
-s1, c2, s2 = utl.narrow_col()
+s1, c2, s2 = utl.narrow_col_intro()
 
 # Textbooks
 with c2:
@@ -73,10 +73,10 @@ with c2:
     c2_1, s2_1, c2_2 = st.columns((1, 0.05, 1))
 
     with c2_1:
-        st.image("src/images/intro_MWG.jpg", width=350)
+        st.image("src/images/intro_MWG.jpg", width=300)
 
     with c2_2:
-        st.image("src/images/intro_osborne_rubinstein.jpg", width=350)
+        st.image("src/images/intro_osborne_rubinstein.jpg", width=300)
 
 
 # Other references
