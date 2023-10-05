@@ -1,4 +1,4 @@
-mport streamlit as st
+import streamlit as st
 from st_pages import Page, add_page_title, show_pages, show_pages_from_config
 
 import src.scripts.plot_themes as thm
