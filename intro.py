@@ -4,15 +4,15 @@ from st_pages import Page, add_page_title, show_pages, show_pages_from_config
 import src.scripts.plot_themes as thm
 import src.scripts.utils as utl
 
+utl.local_css("src/styles/styles_home.css")
+utl.external_css(
+    "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+)
+
 st.set_page_config(
     page_title="PhD Microeconomics",
     page_icon="🍎",
     layout="wide",
-)
-
-utl.local_css("src/styles/styles_home.css")
-utl.external_css(
-    "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
 )
 
 show_pages_from_config()
@@ -26,27 +26,50 @@ email_url = "mailto:justinas.grigaitis@econ.uzh.ch"
 
 # Intro
 with c1:
-    st.title("Microeconomics for PhD Students")
+    # Title
+    st.title("PhD for All: Microeconomics")
 
+    # Header
     st.markdown(
-        "Trying to learn and enjoy the first year of Econ PhD. <br> Procrastinating productively. <br> All mistakes are my own.",
+        '<span style="font-size: 28px; display: block; margin-bottom: 5px;">*Interactive visuals. Rigorous theory. Simple code.*</span>',
         unsafe_allow_html=True,
     )
 
     st.markdown(
-        """**Disclaimer:** <br>
-        This website does not represent the official curriculum taught at my university. <br>
-        My goal is to cover fewer topics in greater depth rather than scratch the surface of many. <br>
-        Visuals are meant to capture the key concepts, which could be also helpful for undergraduate students and industry professionals.<br>
-        """,
-        # Main difference is matrix algebra and proving everything along the way, which might not always be included here.
-        # Hopefully it will give insights to both PhD students, undergrads, and others.
+        "<hr style='margin-top: 0; margin-bottom: 5px;'>",
         unsafe_allow_html=True,
+    )
+
+    st.markdown(
+        r"""Learning and helping others learn along the way.<br>
+            Explaining PhD concepts intuitively.<br>
+            Procrastinating productively.""",
+        unsafe_allow_html=True,
+    )
+    st.markdown(
+        r"""Targeted at **grad students**, but useful for **professionals** and **undergrads** alike.""",
+        unsafe_allow_html=True,
+    )
+
+    st.markdown("My other Econ PhD apps:")
+
+    but_col1, but_col2, _ = st.columns((1, 1, 2))
+
+    but_col1.link_button(
+        "PhD Econometrics",
+        "https://phd-econometrics.streamlit.app/",
+        type="secondary",
+    )
+
+    but_col2.link_button(
+        "PhD Macroeconomics",
+        "https://phd-macroeconomics.streamlit.app/",
+        type="secondary",
     )
 
     st.markdown(
         f"""
-        Please send me corections and suggestions: 
+        Please send me feedback:<br>
     <a href="{linkedin_url}" target="_blank">
         <i class="fab fa-linkedin fa-lg"></i>
     </a>
@@ -57,6 +80,15 @@ with c1:
         <i class="fab fa-github fa-lg"></i>
     </a>
     """,
+        unsafe_allow_html=True,
+    )
+
+    st.markdown(
+        r"""<u>**Disclaimer:**</u> <br>
+        This website does not represent the official curriculum taught at my university. <br>
+        My goal is to cover fewer topics in greater depth rather than scratch the surface of many. <br>
+        All mistakes are my own.
+        """,
         unsafe_allow_html=True,
     )
 
@@ -118,6 +150,12 @@ with c2:
     st.link_button(
         "Intermediate Microeconomics YouTube playlist by Robert Townsend (MIT)",
         "https://youtube.com/playlist?list=PLUl4u3cNGP63wnrKge9vllow3Y2OOOKqF&si=OQh7qTNYK2AqG9pl",
+        type="secondary",
+    )
+
+    st.link_button(
+        "Intermediate Microeconomics with Excel by Humberto Barreto (DePauw)",
+        "https://socialsci.libretexts.org/Bookshelves/Economics/Intermediate_Microeconomics_with_Excel_(Barreto)",
         type="secondary",
     )
 
@@ -184,7 +222,7 @@ with c2:
         
     <div class="numbered">
         1. Topic 1 (MWG Chapters) <br>
-        2. Topic 2 (SMWGLP Chapters) <br>
+        2. Topic 2 (MWG Chapters) <br>
     </div>
 
     <br>

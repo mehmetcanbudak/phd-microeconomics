@@ -5,5 +5,5 @@ icon = "🏠"
 
 [[pages]]
 path = "pages/1_choice_theory.py"
-name = "1. Choice Theory"
+name = "Choice Theory"
 icon = "📖"

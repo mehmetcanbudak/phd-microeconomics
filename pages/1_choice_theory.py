@@ -3,12 +3,11 @@ from itertools import combinations
 
 import numpy as np
 import pandas as pd
+import src.scripts.plot_themes as thm
+import src.scripts.utils as utl
 import streamlit as st
 from matplotlib import pyplot as plt
 from st_pages import add_page_title
-
-import src.scripts.plot_themes as thm
-import src.scripts.utils as utl
 
 ### PAGE CONFIGS ###
 utl.micro_page_config()
@@ -113,9 +112,7 @@ with warp_col:
         if confirm and selected_items:
             # Record choices and shown bundles
             st.session_state.choices.append(set(selected_items))
-            st.session_state.shown_bundles.append(
-                st.session_state.current_bundle
-            )
+            st.session_state.shown_bundles.append(st.session_state.current_bundle)
 
             # Remove current bundle from the remaining ones
             st.session_state.remaining_bundles = [
@@ -139,18 +136,14 @@ with warp_col:
         html_table = '<table border="1">'
 
         # Add the headers
-        html_table += (
-            "<thead><tr><th>Bundles</th><th>Choices</th></tr></thead><tbody>"
-        )
+        html_table += "<thead><tr><th>Bundles</th><th>Choices</th></tr></thead><tbody>"
 
         # Add the rows of data
         for bundle, choice in zip(bundles, choices):
             bundle_str = str(bundle).replace("'", "")
             choice_str = str(choice).replace("'", "")
 
-            html_table += (
-                f"<tr><td>{bundle_str}</td><td>{choice_str}</td></tr>"
-            )
+            html_table += f"<tr><td>{bundle_str}</td><td>{choice_str}</td></tr>"
 
             # html_table += f"<tr><td>{bundle}</td><td>{choice}</td></tr>"
 
@@ -251,9 +244,7 @@ with warp_col:
                 # st.write(f"""{warp["reason"]}""")
 
                 if warp["condition"]:
-                    st.write(
-                        "Your choices were inconsistent according to WARP.😔"
-                    )
+                    st.write("Your choices were inconsistent according to WARP.😔")
 
                     st.markdown(
                         f"""**Explanation:**<br>
@@ -311,9 +302,7 @@ with c2:
         unsafe_allow_html=True,
     )
 
-    rev_prefs_link = (
-        "https://cran.r-project.org/web/packages/revealedPrefs/index.html"
-    )
+    rev_prefs_link = "https://cran.r-project.org/web/packages/revealedPrefs/index.html"
     st.markdown(
         rf"""I found this package in R, [revealedPrefs]({rev_prefs_link}), which seem to have more efficient/general solutions. Is there no need to for this in Python?""",
         unsafe_allow_html=True,
@@ -325,7 +314,7 @@ _, c3, _ = utl.wide_col()
 
 with c3:
     st.markdown(
-        "<h3 style='text-align: left'> 2. Theory part</h3>",
+        "<h3 style='text-align: left'> 2. Theory</h3>",
         unsafe_allow_html=True,
     )
 
@@ -333,12 +322,14 @@ with c3:
         "Collection of statements about preference relations and utility representation."
     )
 
+    st.write("Work in progress - check back soon.")
+
 ### EXERCISES ###
 _, c4, _ = utl.wide_col()
 
 with c4:
     st.markdown(
-        "<h3 style='text-align: left'> 3. Exercise part</h3>",
+        "<h3 style='text-align: left'> 3. Exercises </h3>",
         unsafe_allow_html=True,
     )
 
@@ -364,3 +355,5 @@ with c5:
     st.write(
         r"This will contain some of the main proofs. I'll try to explain how I memorize math in plain English."
     )
+
+    st.write("Work in progress - check back soon.")
